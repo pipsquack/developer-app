@@ -2,9 +2,9 @@ FROM openjdk:17-slim
 ARG BUILD
 ARG GIT_COMMIT_SHA
 
-ADD app/build/distributions/spring-boot.tar /
-WORKDIR /spring-boot
+ADD app/build/lib/developer-app.jar /
+WORKDIR /
 ENV BUILD=$BUILD
 ENV GIT_COMMIT_SHA=$GIT_COMMIT_SHA
 
-CMD [ "bin/spring-boot" ]
+CMD [ "java -jar developer-app.jar" ]
