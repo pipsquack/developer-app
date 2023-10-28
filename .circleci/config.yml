@@ -51,7 +51,7 @@ jobs:
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
           npx @datadog/datadog-ci git-metadata upload
-          docker buildx build --push -t yaalexf/developer-app:nightly --platform linux/amd64,linux/arm64 --build-arg BUILD=${CIRCLE_BUILD_NUM} --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} ./docker
+          docker buildx build --push -t yaalexf/developer-app:nightly --platform linux/amd64,linux/arm64 --build-arg BUILD=${CIRCLE_BUILD_NUM} --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} -f docker/Dockerfile .
 workflows:
   ci-integration-workflow:
     jobs:
