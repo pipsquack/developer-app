@@ -1,0 +1,63 @@
+version: 2.1
+orbs:
+  datadog-agent: datadog/synthetics-ci-orb@3.2.0
+
+jobs:
+  test:
+    docker:
+      ### https://circleci.com/developer/images/image/cimg/openjdk
+      - image: cimg/openjdk:17.0
+    environment:
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - datadog-agent/setup
+      - run: ./gradlew test -Pdd-civisibility
+      - datadog-agent/stop
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+  build:
+    docker:
+      ### https://circleci.com/developer/images/image/cimg/openjdk
+      - image: cimg/openjdk:17.0-node
+    environment:
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - run: ./gradlew assemble
+      ### https://circleci.com/docs/building-docker-images/#docker-version
+      - setup_remote_docker:
+          version: 20.10.24
+      - run: |
+          GIT_COMMIT_SHA=$(git rev-parse HEAD)
+          BUILD=0.0.$CIRCLE_BUILD_NUM
+          
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+
+          npx @datadog/datadog-ci git-metadata upload
+          docker buildx build --push -t yaalexf/developer-app:nightly --platform linux/amd64,linux/arm64 --build-arg BUILD=${$CIRCLE_BUILD_NUM} --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} .
+workflows:
+  ci-integration-workflow:
+    jobs:
+      - test:
+          context:
+            - Datadog
+      - build:
+          context:
+            - Datadog
+          requires:
+            - test
