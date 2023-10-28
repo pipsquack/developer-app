@@ -47,6 +47,7 @@ jobs:
           GIT_COMMIT_SHA=$(git rev-parse HEAD)
           BUILD=0.0.$CIRCLE_BUILD_NUM
           
+          docker buildx create --use
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
           npx @datadog/datadog-ci git-metadata upload
