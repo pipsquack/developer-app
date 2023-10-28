@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  datadog-agent: datadog/synthetics-ci-orb@3.2.0
+  datadog-agent: datadog/agent@0
 
 jobs:
   test:
