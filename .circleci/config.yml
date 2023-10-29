@@ -33,6 +33,7 @@ jobs:
       - image: cimg/openjdk:17.0-node
     environment:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      GIT_URL: << pipeline.project.git_url >>
     steps:
       - checkout
       - restore_cache:
@@ -51,7 +52,12 @@ jobs:
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
           npx @datadog/datadog-ci git-metadata upload
-          docker buildx build --push -t yaalexf/developer-app:nightly --platform linux/amd64,linux/arm64 --build-arg BUILD=${CIRCLE_BUILD_NUM} --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} -f docker/Dockerfile .
+          docker buildx build --push -t yaalexf/developer-app:nightly \
+          --platform linux/amd64,linux/arm64 \
+          --build-arg BUILD=${CIRCLE_BUILD_NUM} \
+          --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} \
+          --build-arg GIT_URL=${GIT_URL} \
+          -f docker/Dockerfile .
 workflows:
   ci-integration-workflow:
     jobs:
