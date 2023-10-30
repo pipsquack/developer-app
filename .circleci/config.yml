@@ -58,7 +58,6 @@ jobs:
           --build-arg BUILD=${CIRCLE_BUILD_NUM} \
           --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} \
           --build-arg GIT_URL=${GIT_URL} \
-          --build-arg GIT_BRANCH=${CIRCLE_BRANCH} \
           -f docker/Dockerfile .
 workflows:
   ci-integration-workflow:
