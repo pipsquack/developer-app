@@ -44,10 +44,11 @@ jobs:
       ### https://circleci.com/docs/building-docker-images/#docker-version
       - setup_remote_docker:
           version: 20.10.24
+      ### https://circleci.com/docs/variables/
       - run: |
           GIT_COMMIT_SHA=$(git rev-parse HEAD)
           BUILD=0.0.$CIRCLE_BUILD_NUM
-          
+
           docker buildx create --use
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
@@ -57,6 +58,7 @@ jobs:
           --build-arg BUILD=${CIRCLE_BUILD_NUM} \
           --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} \
           --build-arg GIT_URL=${GIT_URL} \
+          --build-arg GIT_BRANCH=${CIRCLE_BRANCH} \
           -f docker/Dockerfile .
 workflows:
   ci-integration-workflow:
