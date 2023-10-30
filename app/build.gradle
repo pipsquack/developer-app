@@ -32,6 +32,9 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
 
     implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.2.1'
+
+    // Injecting vulnerability
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.8'
 }
 
 test {
