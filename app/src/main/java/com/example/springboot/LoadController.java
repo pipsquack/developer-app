@@ -34,8 +34,8 @@ public class LoadController {
                 .build();
     }
 
-    @GetMapping("/process")
-    public ResponseEntity<String> process() {
+    @GetMapping("/process/payment")
+    public ResponseEntity<String> processPayment() {
         ResponseEntity<String> response = null;
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             response = (ResponseEntity<String>) httpclient.execute(httpGet, r -> {
