@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MiscController {
 
-	@GetMapping("/boom")
+	@GetMapping("/singularity")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void boom() {
 		System.out.println(5 / 0);
