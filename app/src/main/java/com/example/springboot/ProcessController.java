@@ -21,12 +21,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 @RestController
-public class LoadController {
+public class ProcessController {
 
     Logger logger = LoggerFactory.getLogger("developer-app");
     private ClassicHttpRequest httpGet;
 
-    public LoadController() {
+    public ProcessController() {
         httpGet = ClassicRequestBuilder.get("https://fakerapi.it/api/v1/custom")
                 .addParameter("_quantity", "10")
                 .addParameter("cc", "card_number")
