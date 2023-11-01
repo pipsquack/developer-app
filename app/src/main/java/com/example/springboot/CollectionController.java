@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CollectionController {
 
 	List<String> collection = new ArrayList<String>();
+	Random random = new Random();
 
 	@GetMapping("/collection/create")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -34,6 +35,14 @@ public class CollectionController {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void sort() {
 		Collections.sort(collection);
+	}
+
+	@GetMapping("/collection/drain")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void drain() {
+		for (int i = random.nextInt(100); i > 0; i--) {
+			collection.remove(i);
+		}
 	}
 
 }
