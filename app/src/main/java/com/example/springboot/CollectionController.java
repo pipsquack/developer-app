@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,8 +40,8 @@ public class CollectionController {
 
 	@GetMapping("/collection/drain")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void drain() {
-		for (int i = random.nextInt(100); i > 0; i--) {
+	public void drain(@RequestParam(defaultValue = "50") Integer upperBound) {
+		for (int i = random.nextInt(upperBound); i > 0; i--) {
 			collection.remove(i);
 		}
 	}
