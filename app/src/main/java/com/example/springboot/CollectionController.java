@@ -21,30 +21,38 @@ public class CollectionController {
 	@GetMapping("/collection/create")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void create() {
-		collection.clear();
-		for (double n = collectionSize; n >= 0; n--) {
-			collection.add(String.valueOf(new Random().nextInt(200)));
+		synchronized (collection) {
+			collection.clear();
+			for (double n = collectionSize; n >= 0; n--) {
+				collection.add(String.valueOf(new Random().nextInt(200)));
+			}
 		}
 	}
 
 	@GetMapping("/collection/shuffle")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void shuffle() {
-		Collections.shuffle(collection);
+		synchronized (collection) {
+			Collections.shuffle(collection);
+		}
 	}
 
 	@GetMapping("/collection/sort")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void sort() {
-		Collections.sort(collection);
+		synchronized (collection) {
+			Collections.sort(collection);
+		}
 	}
 
 	@GetMapping("/collection/drain")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void drain(@RequestParam(defaultValue = "5") Integer percentage) {
 		int elementsToDrain = (int) random.nextDouble(collectionSize * (percentage / 100.0));
-		for (int i = elementsToDrain; i > 0; i--) {
-			collection.remove(i);
+		synchronized (collection) {
+			for (int i = elementsToDrain; i > 0; i--) {
+				collection.remove(i);
+			}
 		}
 	}
 
