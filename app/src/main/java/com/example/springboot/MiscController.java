@@ -10,7 +10,7 @@ public class MiscController {
 
 	@GetMapping("/singularity")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void boom() {
+	public void singularity() {
 		System.out.println(5 / 0);
 	}
 }
