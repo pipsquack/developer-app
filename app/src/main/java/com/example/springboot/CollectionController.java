@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class CollectionController {
 
 	List<String> collection = new ArrayList<String>();
+	double collectionSize = Math.pow(2, 20);
 	Random random = new Random();
 
 	@GetMapping("/collection/create")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void create() {
 		collection.clear();
-		for (int n = 2 ^ 24; n >= 0; n--) {
+		for (double n = collectionSize; n >= 0; n--) {
 			collection.add(String.valueOf(new Random().nextInt(200)));
 		}
 	}
@@ -40,8 +41,9 @@ public class CollectionController {
 
 	@GetMapping("/collection/drain")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void drain(@RequestParam(defaultValue = "50") Integer upperBound) {
-		for (int i = random.nextInt(upperBound); i > 0; i--) {
+	public void drain(@RequestParam(defaultValue = "5") Integer percentage) {
+		int elementsToDrain = (int) random.nextDouble(collectionSize * (percentage / 100.0));
+		for (int i = elementsToDrain; i > 0; i--) {
 			collection.remove(i);
 		}
 	}
