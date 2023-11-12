@@ -43,7 +43,7 @@ jobs:
       - run: ./gradlew bootJar
       ### https://circleci.com/docs/building-docker-images/#docker-version
       - setup_remote_docker:
-          version: 20.10.24
+          version: default
       ### https://circleci.com/docs/variables/
       - run: |
           GIT_COMMIT_SHA=$(git rev-parse HEAD)
