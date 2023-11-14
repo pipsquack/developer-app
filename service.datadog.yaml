@@ -1,0 +1,19 @@
+{
+  "schema-version": "v2.2",
+  "dd-service": "developer-app",
+  "application": "Developer Experience",
+  "tier": "Demo",
+  "lifecycle": "Development",
+  "links": [
+    {
+      "name": "developer-app",
+      "type": "repo",
+      "provider": "github",
+      "url": "https://github.com/pipsquack/developer-app"
+    }
+  ],
+  "type": "web",
+  "languages": [
+    "jvm"
+  ]
+}
