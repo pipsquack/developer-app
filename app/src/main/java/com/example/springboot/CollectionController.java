@@ -36,7 +36,7 @@ public class CollectionController {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void shuffle() {
 		synchronized (collection) {
-			Collections.shuffle(collection);
+			Collections.shuffle(collection, random);
 		}
 	}
 
