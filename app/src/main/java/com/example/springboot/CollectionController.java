@@ -46,16 +46,6 @@ public class CollectionController {
 		synchronized (collection) {
 			Collections.sort(collection);
 		}
-		sayHello();
-	}
-
-	void sayHello() {
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@DeleteMapping("/collection/drain")
