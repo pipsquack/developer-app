@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 @RestController
@@ -45,7 +44,7 @@ public class KafkaController {
 	private long pollDuration = 15;
 
 	public KafkaController() {
-		bootstrapServers = "kafka.kafka:9092";
+		bootstrapServers = "broker:9092";
 		consumerGroup = "developer-app";
 		topic = "developer-app-topic";
 
@@ -62,7 +61,7 @@ public class KafkaController {
 		consumerProperties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 		try {
-			pollDuration = Long.valueOf(System.getenv().getOrDefault("APP_KAFKA_POLL_DURATION", "15"));
+			pollDuration = Long.valueOf(System.getenv().getOrDefault("APP_KAFKA_POLL_DURATION_SEC", "5"));
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -99,20 +98,21 @@ public class KafkaController {
 			consumer.subscribe(Arrays.asList(topic));
 			ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(pollDuration));
 			for (ConsumerRecord<String, String> record : records) {
+				JsonObject root = new JsonObject();
 				JsonObject o = new JsonObject();
+				root.add("kafka", o);
 				o.addProperty("key", record.key());
 				o.addProperty("partition", record.partition());
 				o.addProperty("offset", record.offset());
 				o.addProperty("payload", record.value());
-				JsonArray headers = new JsonArray();
+
+				JsonObject headers = new JsonObject();
 				for (Header header : record.headers()) {
-					JsonObject h = new JsonObject();
-					h.addProperty("key", header.key());
-					h.addProperty("value", header.value().toString());
-					headers.add(h);
+					headers.addProperty(header.key(), new String(header.value()));
 				}
 				o.add("headers", headers);
-				logger.info(gson.toJson(o));
+
+				logger.info(gson.toJson(root));
 			}
 		}
 	}

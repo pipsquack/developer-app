@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +21,7 @@ public class CollectionController {
 	double collectionSize = Math.pow(2, 20);
 	Random random = new Random();
 
-	@GetMapping("/collection/create")
+	@PutMapping("/collection/create")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void create() {
 		synchronized (collection) {
@@ -29,15 +32,15 @@ public class CollectionController {
 		}
 	}
 
-	@GetMapping("/collection/shuffle")
+	@PatchMapping("/collection/shuffle")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void shuffle() {
 		synchronized (collection) {
-			Collections.shuffle(collection);
+			Collections.shuffle(collection, random);
 		}
 	}
 
-	@GetMapping("/collection/sort")
+	@PatchMapping("/collection/sort")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void sort() {
 		synchronized (collection) {
@@ -45,7 +48,7 @@ public class CollectionController {
 		}
 	}
 
-	@GetMapping("/collection/drain")
+	@DeleteMapping("/collection/drain")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void drain(@RequestParam(defaultValue = "5") Integer percentage) {
 		int elementsToDrain = (int) random.nextDouble(collectionSize * (percentage / 100.0));
@@ -53,6 +56,14 @@ public class CollectionController {
 			for (int i = elementsToDrain; i > 0; i--) {
 				collection.remove(i);
 			}
+		}
+	}
+
+	@PutMapping("/collection/add/{element}")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void drain(@RequestParam(defaultValue = "5") Integer percentage, @PathVariable String element) {
+		synchronized (collection) {
+			collection.add(element);
 		}
 	}
 

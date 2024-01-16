@@ -40,7 +40,8 @@ public class ProcessController {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             response = (ResponseEntity<String>) httpclient.execute(httpGet, r -> {
                 if (HttpStatus.valueOf(r.getCode()).is2xxSuccessful()) {
-                    JsonObject json = (JsonObject) JsonParser.parseReader(new InputStreamReader(r.getEntity().getContent()));
+                    JsonObject json = (JsonObject) JsonParser
+                            .parseReader(new InputStreamReader(r.getEntity().getContent()));
                     JsonArray data = json.get("data").getAsJsonArray();
                     JsonObject top = null;
                     for (JsonElement element : data) {
@@ -49,14 +50,15 @@ public class ProcessController {
                             if (top == null) {
                                 top = node;
                             } else {
-                                if (Integer.parseInt(node.get("value").getAsString()) > Integer
-                                        .parseInt(top.get("value").getAsString())) {
+                                if (node.get("value").getAsInt() > top.get("value").getAsInt()) {
                                     top = node;
                                 }
                             }
                         }
                     }
-                    logger.info("Highest value credit card is {}", top.get("cc").getAsString());
+                    if (top != null) {
+                        logger.info("Highest value credit card is {}", top.get("cc").getAsString());
+                    }
                     return new ResponseEntity<String>(json.toString(), HttpStatusCode.valueOf(r.getCode()));
                 } else {
                     return new ResponseEntity<String>(r.getReasonPhrase(), HttpStatusCode.valueOf(r.getCode()));
@@ -65,7 +67,7 @@ public class ProcessController {
         } catch (
 
         IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return response;
     }
