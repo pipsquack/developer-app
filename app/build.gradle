@@ -37,6 +37,8 @@ dependencies {
 
     // Injecting vulnerability
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.8'
+
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.24'
 }
 
 test {
