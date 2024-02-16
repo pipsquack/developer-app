@@ -35,7 +35,7 @@ dependencies {
 
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: 'latest.release'
 
-    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: 'latest.release'
+    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.+'
 
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: 'latest.release'
 
