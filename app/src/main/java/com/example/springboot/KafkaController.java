@@ -44,7 +44,7 @@ public class KafkaController {
 	private long pollDuration = 15;
 
 	public KafkaController() {
-		bootstrapServers = "broker:9092";
+		bootstrapServers = "broker.kafka:9092";
 		consumerGroup = "developer-app";
 		topic = "developer-app-topic";
 

@@ -38,7 +38,7 @@ public class MySQLController {
 			ServletOutputStream out = response.getOutputStream();
 			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.developer-app:3306/employees?autoReconnect=true&useSSL=false", "frieren",
+					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
 					"b3y@nd");
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM employees LIMIT 1000");
@@ -63,7 +63,7 @@ public class MySQLController {
 	public ResponseEntity<String> simple_join() {
 		try {
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.developer-app:3306/employees?autoReconnect=true&useSSL=false", "frieren",
+					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
 					"b3y@nd");
 			Statement stmt = con.createStatement();
 			stmt.execute("SELECT first_name, last_name, dept_name " +
@@ -91,7 +91,7 @@ public class MySQLController {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.developer-app:3306/employees?autoReconnect=true&useSSL=false", "frieren",
+					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
 					"b3y@nd");
 			con.setAutoCommit(false);
 
@@ -127,7 +127,7 @@ public class MySQLController {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.developer-app:3306/employees?autoReconnect=true&useSSL=false", "frieren",
+					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
 					"b3y@nd");
 			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			Statement stmt = con.createStatement();
