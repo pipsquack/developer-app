@@ -61,7 +61,7 @@ public class CollectionController {
 
 	@PutMapping("/collection/add/{element}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void drain(@RequestParam(defaultValue = "5") Integer percentage, @PathVariable String element) {
+	public void addElement(@PathVariable String element) {
 		synchronized (collection) {
 			collection.add(element);
 		}
