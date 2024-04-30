@@ -1,0 +1,98 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: approver
+  namespace: developer-app
+  labels:
+    app.kubernetes.io/name: approver
+    admission.datadoghq.com/enabled: "true"
+    tags.datadoghq.com/service: approver
+  annotations:
+    admission.datadoghq.com/java-lib.version: latest
+spec:
+  containers:
+  - name: approver
+    image: yaalexf/blackhole:main
+    imagePullPolicy: Always
+    env:
+    - name: APP_TOPIC
+      value: "developer-app-topic"
+    - name: APP_CONSUMER_GROUP
+      value: "approvers"
+    - name: APP_POLL_SIZE
+      value: "1"
+    - name: APP_POLL_DELAY_MILI
+      value: "1000"
+    - name: DD_DATA_STREAMS_ENABLED
+      value: "true"
+    - name: DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED
+      value: "true"
+    resources:
+      limits: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: copywriter
+  namespace: developer-app
+  labels:
+    app.kubernetes.io/name: copywriter
+    admission.datadoghq.com/enabled: "true"
+    tags.datadoghq.com/service: copywriter
+  annotations:
+    admission.datadoghq.com/java-lib.version: latest
+spec:
+  containers:
+  - name: copywriter
+    image: yaalexf/blackhole:main
+    imagePullPolicy: Always
+    env:
+    - name: APP_TOPIC
+      value: "developer-app-topic"
+    - name: APP_RELAY_TOPIC
+      value: "ready-to-go"
+    - name: APP_CONSUMER_GROUP
+      value: "emailers"
+    - name: APP_POLL_SIZE
+      value: "500"
+    - name: APP_POLL_DELAY_MILI
+      value: "60000"
+    - name: DD_DATA_STREAMS_ENABLED
+      value: "true"
+    - name: DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED
+      value: "true"
+    resources:
+      limits: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emailer
+  namespace: developer-app
+  labels:
+    app.kubernetes.io/name: emailer
+    admission.datadoghq.com/enabled: "true"
+    tags.datadoghq.com/service: emailer
+  annotations:
+    admission.datadoghq.com/java-lib.version: latest
+spec:
+  containers:
+  - name: emailer
+    image: yaalexf/blackhole:main
+    imagePullPolicy: Always
+    env:
+    - name: APP_TOPIC
+      value: "ready-to-go"
+    - name: APP_CONSUMER_GROUP
+      value: "emailers"
+    - name: APP_POLL_SIZE
+      value: "500"
+    - name: APP_POLL_DELAY_MILI
+      value: "60000"
+    - name: DD_DATA_STREAMS_ENABLED
+      value: "true"
+    - name: DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED
+      value: "true"
+    resources:
+      limits: {}

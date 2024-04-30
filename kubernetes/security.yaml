@@ -1,0 +1,37 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: attacker
+  namespace: developer-app
+  labels:
+    app.kubernetes.io/name: attacker
+    admission.datadoghq.com/enabled: "false"
+    tags.datadoghq.com/env: lab
+    tags.datadoghq.com/service: attacker
+    tags.datadoghq.com/version: "0.0"
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: attacker
+            image: alpine
+            command: ["sh", "-c", "--"]
+            args:
+            - |-
+              for n in $(seq 200)
+              do
+                wget -qO /dev/null --header "user-agent:Arachni/v1.0"  http://developer-app/health
+                wget -qO /dev/null --header "user-agent:Arachni/v1.0"  http://developer-app/deadend
+              done
+              echo Done!
+            env:
+            - name: NODE
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          restartPolicy: OnFailure
+---
