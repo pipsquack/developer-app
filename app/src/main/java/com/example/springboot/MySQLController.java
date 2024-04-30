@@ -36,10 +36,7 @@ public class MySQLController {
 	public ResponseEntity<String> simple_query(final HttpServletResponse response) {
 		try {
 			ServletOutputStream out = response.getOutputStream();
-			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
-					"b3y@nd");
+			Connection con = DriverManager.getConnection("jdbc:mysql://mysql.mysql/employees", "frieren", "b3y@nd");
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM employees LIMIT 1000");
 			while (rs.next()) {
@@ -62,9 +59,7 @@ public class MySQLController {
 	@GetMapping(value = "/mysql/simple_join", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> simple_join() {
 		try {
-			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
-					"b3y@nd");
+			Connection con = DriverManager.getConnection("jdbc:mysql://mysql.mysql/employees", "frieren", "b3y@nd");
 			Statement stmt = con.createStatement();
 			stmt.execute("SELECT first_name, last_name, dept_name " +
 					"FROM employees, departments, current_dept_emp " +
@@ -90,9 +85,7 @@ public class MySQLController {
 	public ResponseEntity<String> lock() {
 		Connection con = null;
 		try {
-			con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
-					"b3y@nd");
+			con = DriverManager.getConnection("jdbc:mysql://mysql.mysql/employees", "frieren", "b3y@nd");
 			con.setAutoCommit(false);
 
 			Statement stmt = con.createStatement();
@@ -126,9 +119,7 @@ public class MySQLController {
 	public ResponseEntity<String> retrieve_locked() {
 		Connection con = null;
 		try {
-			con = DriverManager.getConnection(
-					"jdbc:mysql://mysql.mysql:3306/employees?autoReconnect=true&useSSL=false", "frieren",
-					"b3y@nd");
+			con = DriverManager.getConnection("jdbc:mysql://mysql.mysql/employees", "frieren", "b3y@nd");
 			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			Statement stmt = con.createStatement();
 			stmt.execute("SELECT dept_name FROM departments FOR SHARE");
