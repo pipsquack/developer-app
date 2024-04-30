@@ -1,26 +1,20 @@
 ### https://docs.datadoghq.com/tracing/service_catalog/adding_metadata/#service-definition-schema-v22
-{
-  "schema-version": "v2.2",
-  "dd-service": "developer-app",
-  "application": "Developer Experience",
-  "tier": "Demo",
-  "lifecycle": "Development",
-  "links": [
-    {
-      "name": "Source",
-      "type": "repo",
-      "provider": "Github",
-      "url": "https://github.com/pipsquack/developer-app"
-    },
-    {
-      "name": "Deployment pipeline",
-      "type": "other",
-      "provider": "CircleCI",
-      "url": "https://app.circleci.com/pipelines/github/pipsquack/developer-app"
-    }
-  ],
-  "type": "web",
-  "languages": [
-    "jvm"
-  ]
-}
+---
+schema-version: v2.2
+dd-service: developer-app
+team: developer-experience
+application: developer-experience
+tier: Demo
+lifecycle: development
+type: web
+links:
+- name: Source
+  type: repo
+  provider: Github
+  url: https://github.com/pipsquack/developer-app
+- name: Deployment pipeline
+  type: other
+  provider: CircleCI
+  url: https://app.circleci.com/pipelines/github/pipsquack/developer-app
+languages:
+- jvm
