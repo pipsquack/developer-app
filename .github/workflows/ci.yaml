@@ -70,10 +70,10 @@ jobs:
       #       GIT_BRANCH=${{ github.ref_name }}
       - name: Build Docker image
         env:
-          BUILD=${{ github.run_id }}
-          GIT_COMMIT_SHA=${{ github.sha }}
-          GIT_URL=${{ github.repositoryUrl }}
-          GIT_BRANCH=${{ github.ref_name }}
+          BUILD: ${{ github.run_id }}
+          GIT_COMMIT_SHA: ${{ github.sha }}
+          GIT_URL: ${{ github.repositoryUrl }}
+          GIT_BRANCH: ${{ github.ref_name }}
         run: |
           docker buildx build --push -t yaalexf/developer-app:${GIT_BRANCH} \
           --platform linux/amd64,linux/arm64 \
