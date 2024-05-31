@@ -7,7 +7,6 @@ on:
       - '**.md'
       - 'kubernetes/**'
       - 'service.datadog.yaml'
-      - 'static-analysis.datadog.yml'
   workflow_dispatch:
 
 jobs:
@@ -41,6 +40,25 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: Check code meets quality and security standards
+        id: datadog-static-analysis
+        uses: DataDog/datadog-static-analyzer-github-action@v1
+        with:
+          dd_api_key: ${{ secrets.DATADOG_API_KEY }}
+          dd_app_key: ${{ secrets.DATADOG_APP_KEY }}
+          dd_service: developer-app
+          dd_env: ci
+          dd_site: datadoghq.com
+          cpu_count: 2
+      - name: Check imported libraries are secure and compliant
+        id: datadog-software-composition-analysis
+        uses: DataDog/datadog-sca-github-action@main
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_service: my-app
+          dd_env: ci
+          dd_site: datadoghq.com
       - name: Dump runner context
         env:
           RUNNER_CONTEXT: ${{ toJson(runner) }}
