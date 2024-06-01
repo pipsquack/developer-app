@@ -39,6 +39,7 @@ jobs:
           DD_SITE: datadoghq.com
           DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
           DD_ENV: ci
+          DD_SERVICE: developer-app
       - name: Build application
         run: ./gradlew bootJar
       - name: Dump GitHub context
