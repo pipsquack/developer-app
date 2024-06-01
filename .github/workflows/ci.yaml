@@ -34,6 +34,11 @@ jobs:
           gradle-version: 8.7
       - name: Test application
         run: ./gradlew test -Pdd-civisibility
+        env:
+          DD_CIVISIBILITY_AGENTLESS_ENABLED: true
+          DD_SITE: datadoghq.com
+          DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          DD_ENV: ci
       - name: Build application
         run: ./gradlew bootJar
       - name: Dump GitHub context

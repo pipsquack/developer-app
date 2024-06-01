@@ -49,7 +49,6 @@ test {
     if(project.hasProperty("dd-civisibility")) {
 			jvmArgs = [
 					"-javaagent:${configurations.ddTracerAgent.asPath}",
-					"-Ddd.service=ci-integration",
 					"-Ddd.civisibility.enabled=true"
 			]
   }
