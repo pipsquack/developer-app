@@ -8,6 +8,8 @@ on:
       - 'kubernetes/**'
       - 'service.datadog.yaml'
   workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
 
 jobs:
   build:
