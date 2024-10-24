@@ -22,8 +22,8 @@ jobs:
         run: npm install -g @datadog/datadog-ci
       - name: Tag Pipeline
         env:
-          ORG01_DD_SITE: datadoghq.com
-          ORG01_DD_API_KEY: ${{ secrets.ORG01_DD_API_KEY }}
+          DATADOG_SITE: datadoghq.com
+          DATADOG_API_KEY: ${{ secrets.ORG01_DD_API_KEY }}
         run: datadog-ci tag --level pipeline --tags team:developer-experience
       - name: Set up JDK 11 for x64
         uses: actions/setup-java@v4
