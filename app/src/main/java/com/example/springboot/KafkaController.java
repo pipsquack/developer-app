@@ -75,6 +75,8 @@ public class KafkaController {
 			logger.info("Sending payload {}", payload);
 			ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, payload);
 			producer.send(producerRecord);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 
 	}
@@ -87,6 +89,8 @@ public class KafkaController {
 			logger.info("Sending payload {}", payload);
 			ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, gson.toJson(payload));
 			producer.send(producerRecord);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 
 	}
@@ -111,9 +115,10 @@ public class KafkaController {
 					headers.addProperty(header.key(), new String(header.value()));
 				}
 				o.add("headers", headers);
-
 				logger.info(gson.toJson(root));
 			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 	}
 }
