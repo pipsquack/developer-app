@@ -1,0 +1,97 @@
+name: CI-Org01
+
+on:
+  push:
+    paths-ignore:
+      - '.vscode/**'
+      - '**.md'
+      - 'kubernetes/**'
+      - 'service.datadog.yaml'
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Datadog datadog-ci
+        run: npm install -g @datadog/datadog-ci
+      - name: Tag Pipeline
+        env:
+          ORG01_DD_SITE: datadoghq.com
+          ORG01_DD_API_KEY: ${{ secrets.ORG01_DD_API_KEY }}
+        run: datadog-ci tag --level pipeline --tags team:developer-experience
+      - name: Set up JDK 11 for x64
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.7
+      - name: Test application
+        run: ./gradlew test -Pdd-civisibility
+        env:
+          DD_CIVISIBILITY_AGENTLESS_ENABLED: true
+          DD_SITE: datadoghq.com
+          DD_API_KEY: ${{ secrets.ORG01_DD_API_KEY }}
+          DD_ENV: ci
+          DD_SERVICE: developer-app
+      - name: Build application
+        run: ./gradlew bootJar
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Check code meets quality and security standards
+        id: datadog-static-analysis
+        uses: DataDog/datadog-static-analyzer-github-action@v1
+        with:
+          dd_api_key: ${{ secrets.ORG01_DD_API_KEY }}
+          dd_app_key: ${{ secrets.ORG01_DD_APP_KEY }}
+          dd_service: developer-app
+          dd_env: ci
+          dd_site: datadoghq.com
+          cpu_count: 2
+      - name: Check imported libraries are secure and compliant
+        id: datadog-software-composition-analysis
+        uses: DataDog/datadog-sca-github-action@main
+        with:
+          dd_api_key: ${{ secrets.ORG01_DD_API_KEY }}
+          dd_app_key: ${{ secrets.ORG01_DD_APP_KEY }}
+          dd_service: my-app
+          dd_env: ci
+          dd_site: datadoghq.com
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - # Add support for more platforms with QEMU (optional)
+        # https://github.com/docker/setup-qemu-action
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        env:
+          BUILD: ${{ github.run_id }}
+          GIT_COMMIT_SHA: ${{ github.sha }}
+          GIT_URL: ${{ github.repositoryUrl }}
+          GIT_BRANCH: ${{ github.ref_name }}
+        run: |
+          docker buildx build --push -t yaalexf/developer-app:org01-${GIT_BRANCH} \
+          --platform linux/amd64,linux/arm64 \
+          --build-arg BUILD=${BUILD} \
+          --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} \
+          --build-arg GIT_URL=${GIT_URL} \
+          -f docker/Dockerfile .
