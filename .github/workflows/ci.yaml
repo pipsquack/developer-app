@@ -34,13 +34,16 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.7
+      # https://github.com/marketplace/actions/configure-datadog-test-visibility
+      - name: Configure Datadog Test Optimization
+        uses: datadog/test-visibility-github-action@v2
+        with:
+          languages: java
+          api_key: ${{ secrets.DD_API_KEY }}
+          site: ${{ DATADOG_SITE }}
       - name: Test application
-        run: ./gradlew test -Pdd-civisibility
+        run: ./gradlew test
         env:
-          DD_CIVISIBILITY_AGENTLESS_ENABLED: true
-          DD_CIVISIBILITY_ENABLED: true
-          DD_SITE: datadoghq.com
-          DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
           DD_ENV: ci
           DD_SERVICE: developer-app
       - name: Build application
