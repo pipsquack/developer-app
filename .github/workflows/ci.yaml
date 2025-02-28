@@ -40,7 +40,7 @@ jobs:
         with:
           languages: java
           api_key: ${{ secrets.DATADOG_API_KEY }}
-          site: $DATADOG_SITE
+          site: ${DATADOG_SITE}
       - name: Test application
         run: ./gradlew clean test
         env:
