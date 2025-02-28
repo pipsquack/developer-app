@@ -36,7 +36,7 @@ public class MySQLController {
 	public ResponseEntity<String> simple_query(final HttpServletResponse response) {
 		try {
 			ServletOutputStream out = response.getOutputStream();
-			Connection con = DriverManager.getConnection("jdbc:mysql://mysql.mysql/employees", "frieren", "b3y@nd");
+			Connection con = DriverManager.getConnection("jdbc:mysql://mysql/employees", "frieren", "b3y@nd");
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM employees LIMIT 1000");
 			while (rs.next()) {
