@@ -1,4 +1,4 @@
-name: CI
+name: SHA
 
 jobs:
   build:
@@ -27,4 +27,4 @@ jobs:
           docker inspect yaalexf/developer-app:${GIT_BRANCH} -f json
           jq
           gh
-          
+
