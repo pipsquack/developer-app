@@ -1,4 +1,4 @@
-name: SHA
+name: argo
 
 on:
   workflow_dispatch:
