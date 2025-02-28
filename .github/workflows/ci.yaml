@@ -2,11 +2,8 @@ name: CI
 
 on:
   push:
-    paths-ignore:
-      - '.vscode/**'
-      - '**.md'
-      - 'kubernetes/**'
-      - 'service.datadog.yaml'
+    paths:
+      - 'app/**'
   workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
