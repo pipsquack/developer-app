@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
   - name: developer-app
-    image: yaalexf/developer-app:main
+    image: yaalexf/developer-app:argocd
     imagePullPolicy: Always
     env:
     - name: DD_IAST_ENABLED
