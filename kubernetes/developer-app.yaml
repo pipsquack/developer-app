@@ -2,17 +2,17 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: developer-app
-  namespace: developer-app
   labels:
     app.kubernetes.io/name: developer-app
     admission.datadoghq.com/enabled: "true"
     tags.datadoghq.com/service: developer-app
+    pipsquack.com/cost-centre: cc001
   annotations:
     admission.datadoghq.com/java-lib.version: latest
 spec:
   containers:
   - name: developer-app
-    image: yaalexf/developer-app:local
+    image: yaalexf/developer-app:main
     imagePullPolicy: Always
     env:
     - name: DD_IAST_ENABLED

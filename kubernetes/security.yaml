@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: attacker
-  namespace: developer-app
   labels:
     app.kubernetes.io/name: attacker
     admission.datadoghq.com/enabled: "false"
@@ -34,4 +33,3 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
           restartPolicy: OnFailure
----
