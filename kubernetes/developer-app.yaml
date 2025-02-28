@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
   - name: developer-app
-    image: yaalexf/developer-app:argocd
+    image: yaalexf/developer-app@sha256:d308a5d31a03e6438a3497baf9fc2987205a38935d3d3cd09971459319356312
     imagePullPolicy: Always
     env:
     - name: DD_IAST_ENABLED
