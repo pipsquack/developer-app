@@ -18,6 +18,9 @@ jobs:
           DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
           DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
     steps:
+      - name: Dump GitHub context
+        run: |
+          echo ${{ toJson(vars) }}
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install Datadog datadog-ci
@@ -51,8 +54,8 @@ jobs:
         id: datadog-static-analysis
         uses: DataDog/datadog-static-analyzer-github-action@v1
         with:
-          dd_api_key: ${{ secrets.DATADOG_API_KEY }}
-          dd_app_key: ${{ secrets.DATADOG_APP_KEY }}
+          dd_api_key: $DATADOG_API_KEY
+          dd_app_key: $ATADOG_APP_KEY
           dd_service: developer-app
           dd_env: ci
           dd_site: datadoghq.com
@@ -61,8 +64,8 @@ jobs:
         id: datadog-software-composition-analysis
         uses: DataDog/datadog-sca-github-action@main
         with:
-          dd_api_key: ${{ secrets.DATADOG_API_KEY }}
-          dd_app_key: ${{ secrets.DATADOG_APP_KEY }}
+          dd_api_key: $DATADOG_API_KEY
+          dd_app_key: $DATADOG_APP_KEY
           dd_service: my-app
           dd_env: ci
           dd_site: datadoghq.com
