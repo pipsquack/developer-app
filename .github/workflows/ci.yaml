@@ -1,3 +1,4 @@
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs
 name: CI
 
 on:
@@ -12,15 +13,16 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+          DATADOG_SITE: ${{ vars.DATADOG_SITE }}
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install Datadog datadog-ci
         run: npm install -g @datadog/datadog-ci
       - name: Tag Pipeline
-        env:
-          DATADOG_SITE: datadoghq.com
-          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
         run: datadog-ci tag --level pipeline --tags team:developer-experience
       - name: Set up JDK 11 for x64
         uses: actions/setup-java@v4
@@ -36,8 +38,8 @@ jobs:
         uses: datadog/test-visibility-github-action@v2
         with:
           languages: java
-          site: ${{ secrets.DATADOG_SITE }}
-          api_key: ${{ secrets.DATADOG_API_KEY }}
+          site: $DATADOG_SITE
+          api_key: $DATADOG_API_KEY
       - name: Test application
         run: ./gradlew clean test
         env:
@@ -45,10 +47,6 @@ jobs:
           DD_SERVICE: developer-app
       - name: Build application
         run: ./gradlew bootJar
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
       - name: Check code meets quality and security standards
         id: datadog-static-analysis
         uses: DataDog/datadog-static-analyzer-github-action@v1
@@ -68,14 +66,10 @@ jobs:
           dd_service: my-app
           dd_env: ci
           dd_site: datadoghq.com
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - # Add support for more platforms with QEMU (optional)
         # https://github.com/docker/setup-qemu-action
@@ -84,15 +78,25 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
-        env:
-          BUILD: ${{ github.run_id }}
-          GIT_COMMIT_SHA: ${{ github.sha }}
-          GIT_URL: ${{ github.repositoryUrl }}
-          GIT_BRANCH: ${{ github.ref_name }}
         run: |
-          docker buildx build --push -t yaalexf/developer-app:${GIT_BRANCH} \
+          docker buildx build --push -t yaalexf/developer-app:${{ github.ref_name }} \
           --platform linux/amd64,linux/arm64 \
-          --build-arg BUILD=${BUILD} \
-          --build-arg GIT_COMMIT_SHA=${GIT_COMMIT_SHA} \
-          --build-arg GIT_URL=${GIT_URL} \
+          --build-arg BUILD=${{ github.run_id }} \
+          --build-arg GIT_COMMIT_SHA=${{ github.sha }} \
+          --build-arg GIT_URL=${{ github.repositoryUrl }} \
           -f docker/Dockerfile .
+      - name: Updates manifest
+        env:
+          IMAGE_NAME: yaalexf/developer-app:${{ github.ref_name }}
+        run: |
+          docker pull ${IMAGE_NAME}
+          export DIGEST=$(docker inspect ${IMAGE_NAME} -f json | jq -r '.[0] | .RepoDigests | .[0]')
+          cd /home/runner/work/developer-app/developer-app/kubernetes
+          sed -i -e "s/image: yaalexf.*/${DIGEST/\//\\/}/" developer-app.yaml
+          git config user.name "${{ github.workflow }} workflow"
+          git config user.email bot@users.noreply.github.com
+          git add developer-app.yaml
+          if [[ `git status --porcelain` ]]; then
+            git commit -m "GitHub Actions run ${{ github.run_id }}"
+            git push
+          fi
