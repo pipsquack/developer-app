@@ -55,7 +55,7 @@ jobs:
         uses: DataDog/datadog-static-analyzer-github-action@v1
         with:
           dd_api_key: $DATADOG_API_KEY
-          dd_app_key: $ATADOG_APP_KEY
+          dd_app_key: $DATADOG_APP_KEY
           dd_service: developer-app
           dd_env: ci
           dd_site: datadoghq.com
