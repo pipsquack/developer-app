@@ -26,6 +26,9 @@ jobs:
           git commit -m "GitHub Actions run ${{ github.run_id }}"
           git push
       - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: 
+          ENV_CONTEXT: ${{ toJson(vars) }}
         run: |
           echo "${{ toJson(github) }}"
-          echo "${{ toJson(vars) }}"          
+          echo "$ENV_CONTEXT"          
