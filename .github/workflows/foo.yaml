@@ -3,6 +3,8 @@ name: foo
 on:
   workflow_dispatch:
   pull_request:
+    branches:
+      - '**'
   schedule:
     - cron: "0 * * * *"
 
