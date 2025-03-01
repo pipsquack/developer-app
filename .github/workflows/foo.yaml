@@ -22,13 +22,11 @@ jobs:
           sed -ie "s/image: yaalexf.*/${DIGEST/\//\\/}/" developer-app.yaml
           git config user.name "${{ github.workflow }} workflow"
           git config user.email "${GIT_EMAIL}"
+          ls -l
           git add developer-app.yaml
           git commit -m "GitHub Actions run ${{ github.run_id }}"
           git push
       - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: 
-          ENV_CONTEXT: ${{ toJson(vars) }}
         run: |
           echo "${{ toJson(github) }}"
-          echo "$ENV_CONTEXT"          
+          echo ${{ toJson(vars) }}
