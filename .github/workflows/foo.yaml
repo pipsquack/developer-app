@@ -32,6 +32,7 @@ jobs:
         run: |
           docker pull yaalexf/developer-app:${GIT_BRANCH}
           export DIGEST=$(docker inspect yaalexf/developer-app:argocd -f json | jq -r '.[0] | .RepoDigests | .[0]')
+          cd /home/runner/work/developer-app/developer-app/kubernetes
           sed -ie "s/image: yaalexf.*/${DIGEST/\//\\/}/" developer-app.yaml
           git add developer-app.yaml
           git commit -m "GitHub Actions run ${RUN_ID}"
