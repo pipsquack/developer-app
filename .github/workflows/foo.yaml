@@ -31,8 +31,8 @@ jobs:
         run: |
           docker pull yaalexf/developer-app:${GIT_BRANCH}
           docker inspect yaalexf/developer-app:${GIT_BRANCH} -f json | jq -r '.[0] | .RepoDigests | .[0]'
-          gh
-          git
+          find / -name 'developer-app.yaml'
+          echo "cd /home/runner/work/developer-app/developer-app"
           cd /home/runner/work/developer-app/developer-app
           ls -l
           cd kubernetes
