@@ -38,7 +38,7 @@ jobs:
           export DIGEST=$(docker inspect yaalexf/developer-app:argocd -f json | jq -r '.[0] | .RepoDigests | .[0]')
           cd /home/runner/work/developer-app/developer-app/kubernetes
           sed -ie "s/image: yaalexf.*/${DIGEST/\//\\/}/" developer-app.yaml
-          git config user.name "${WORKFLOW_NAME} workflow"
+          git config user.name "${{ github.workflow }} workflow"
           git config user.email "${GIT_EMAIL}"
           git add developer-app.yaml
           git commit -m "GitHub Actions run ${RUN_ID}"
