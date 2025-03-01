@@ -30,10 +30,14 @@ jobs:
           GIT_BRANCH: ${{ github.ref_name }}
         run: |
           docker pull yaalexf/developer-app:${GIT_BRANCH}
-          docker inspect yaalexf/developer-app:${GIT_BRANCH} -f json
-          jq -h
-          docker inspect yaalexf/developer-app:${GIT_BRANCH} -f json | jq
+          docker inspect yaalexf/developer-app:${GIT_BRANCH} -f json | jq -r '.[0] | .RepoDigests | .[0]'
           gh
+          git
+          cd /home/runner/work/developer-app/developer-app
+          ls -l
+          cd kubernetes
+          cat developer-app.yaml
+          
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
