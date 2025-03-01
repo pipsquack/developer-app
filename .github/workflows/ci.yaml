@@ -80,16 +80,19 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build Docker image and update manifest
-        env:
-          IMAGE_NAME: yaalexf/developer-app:${{ github.ref_name }}
+      - name: Build Docker image
         run: |
-          docker buildx build --push -t ${IMAGE_NAME} \
+          docker buildx build --push -t yaalexf/developer-app:${{ github.ref_name }} \
           --platform linux/amd64,linux/arm64 \
           --build-arg BUILD=${{ github.run_id }} \
           --build-arg GIT_COMMIT_SHA=${{ github.sha }} \
           --build-arg GIT_URL=${{ github.repositoryUrl }} \
           -f docker/Dockerfile .
+      - name: Updates manifest
+        env:
+          IMAGE_NAME: yaalexf/developer-app:${{ github.ref_name }}
+        run: |
+          docker pull ${IMAGE_NAME}
           export DIGEST=$(docker inspect ${IMAGE_NAME} -f json | jq -r '.[0] | .RepoDigests | .[0]')
           echo $DIGEST
           cd /home/runner/work/developer-app/developer-app/kubernetes
