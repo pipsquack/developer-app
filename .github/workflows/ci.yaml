@@ -41,8 +41,8 @@ jobs:
         uses: datadog/test-visibility-github-action@v2
         with:
           languages: java
-          site: $DATADOG_SITE
-          api_key: $DATADOG_API_KEY
+          site: ${{ env.DATADOG_SITE }}
+          api_key: ${{ env.DATADOG_API_KEY }}
       - name: Test application
         run: ./gradlew clean test
         env:
@@ -54,8 +54,8 @@ jobs:
         id: datadog-static-analysis
         uses: DataDog/datadog-static-analyzer-github-action@v1
         with:
-          dd_api_key: $DATADOG_API_KEY
-          dd_app_key: $DATADOG_APP_KEY
+          dd_api_key: ${{ env.DATADOG_API_KEY }}
+          dd_app_key: ${{ env.DATADOG_APP_KEY }}
           dd_service: developer-app
           dd_env: ci
           dd_site: datadoghq.com
@@ -64,8 +64,8 @@ jobs:
         id: datadog-software-composition-analysis
         uses: DataDog/datadog-sca-github-action@main
         with:
-          dd_api_key: $DATADOG_API_KEY
-          dd_app_key: $DATADOG_APP_KEY
+          dd_api_key: ${{ env.DATADOG_API_KEY }}
+          dd_app_key: ${{ env.DATADOG_APP_KEY }}
           dd_service: my-app
           dd_env: ci
           dd_site: datadoghq.com
