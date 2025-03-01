@@ -92,7 +92,6 @@ jobs:
         env:
           IMAGE_NAME: yaalexf/developer-app:${{ github.ref_name }}
         run: |
-          docker pull ${IMAGE_NAME}
           export DIGEST=$(docker inspect ${IMAGE_NAME} -f json | jq -r '.[0] | .RepoDigests | .[0]')
           cd /home/runner/work/developer-app/developer-app/kubernetes
           sed -i -e "s/image: yaalexf.*/${DIGEST/\//\\/}/" developer-app.yaml
