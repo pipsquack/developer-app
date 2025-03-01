@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Dump GitHub context
         run: |
-          echo ${{ toJson(vars) }}
+          echo "${{ toJson(vars) }}"
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install Datadog datadog-ci
