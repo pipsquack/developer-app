@@ -1,0 +1,39 @@
+name: ArgoCD
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - '**'
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build Docker image
+        env:
+          BUILD: ${{ github.run_id }}
+          GIT_COMMIT_SHA: ${{ github.sha }}
+          GIT_URL: ${{ github.repositoryUrl }}
+          GIT_BRANCH: ${{ github.ref_name }}
+        run: |
+          docker pull yaalexf/developer-app:${GIT_BRANCH}
+          docker inspect yaalexf/developer-app:${GIT_BRANCH} -f json
+          jq
+          gh
+          git
+
