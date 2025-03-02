@@ -90,15 +90,14 @@ jobs:
           -f docker/Dockerfile .
       - name: Updates manifest
         env:
-          BASE: yaalexf/developer-app
-          IMAGE_NAME: yaalexf/developer-app:${{ github.ref_name }}
+          CONTAINER_IMAGE: yaalexf/developer-app
         run: |
-          docker pull ${IMAGE_NAME}
-          export DIGEST=$(docker inspect ${IMAGE_NAME} -f json | jq -r '.[0] | .RepoDigests | .[0]')
+          docker pull ${CONTAINER_IMAGE}:${{ github.ref_name }}
+          export DIGEST=$(docker inspect ${CONTAINER_IMAGE}:${{ github.ref_name }} -f json | jq -r '.[0] | .RepoDigests | .[0]')
           echo $DIGEST
           cd /home/runner/work/developer-app/developer-app/kubernetes
           cat developer-app.yaml
-          sed -i -e "s/${BASE/\//\\/}@.*/${BASE/\//\\/}@${DIGEST/\//\\/}/" developer-app.yaml
+          sed -i -e "s/${CONTAINER_IMAGE/\//\\/}@.*/${CONTAINER_IMAGE/\//\\/}@${DIGEST/\//\\/}/" developer-app.yaml
           cat developer-app.yaml
           git config user.name "${{ github.workflow }} workflow"
           git config user.email bot@users.noreply.github.com
