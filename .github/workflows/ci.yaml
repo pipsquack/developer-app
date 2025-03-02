@@ -93,11 +93,11 @@ jobs:
           CONTAINER_IMAGE: yaalexf/developer-app
         run: |
           docker pull ${CONTAINER_IMAGE}:${{ github.ref_name }}
-          export DIGEST=$(docker inspect ${CONTAINER_IMAGE}:${{ github.ref_name }} -f json | jq -r '.[0] | .RepoDigests | .[0]')
-          echo $DIGEST
+          export IMAGE_DIGEST=$(docker inspect ${CONTAINER_IMAGE}:${{ github.ref_name }} -f json | jq -r '.[0] | .RepoDigests | .[0]')
+          echo $IMAGE_DIGEST
           cd /home/runner/work/developer-app/developer-app/kubernetes
           cat developer-app.yaml
-          sed -i -e "s/${CONTAINER_IMAGE/\//\\/}@.*/${CONTAINER_IMAGE/\//\\/}@${DIGEST/\//\\/}/" developer-app.yaml
+          sed -i -e "s/${CONTAINER_IMAGE/\//\\/}@.*/${IMAGE_DIGEST/\//\\/}/" developer-app.yaml
           cat developer-app.yaml
           git config user.name "${{ github.workflow }} workflow"
           git config user.email bot@users.noreply.github.com
