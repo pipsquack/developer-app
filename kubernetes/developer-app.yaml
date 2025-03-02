@@ -25,7 +25,7 @@ spec:
         admission.datadoghq.com/java-lib.version: latest
     containers:
     - name: developer-app
-      image: yaalexf/developer-app@sha256:8c3c2a62311a85268428dabf9a8059653a2c2090649903cfab7e442d5eaece0a
+      image: yaalexf/developer-app@sha256:225b0cd615f65d2217102cd68d994351ce6b5bb1511c7a6922aa3f589d524c22
       imagePullPolicy: Always
       env:
       - name: DD_IAST_ENABLED
