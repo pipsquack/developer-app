@@ -82,8 +82,6 @@ spec:
           value: UDS_DATAGRAM
         - name: MANAGEMENT_STATSD_METRICS_EXPORT_HOST
           value: /var/run/datadog/dsd.socket
->>>>>>> Stashed changes
-
         # https://docs.datadoghq.com/tracing/guide/inferred-service-opt-in/?tab=java#apm-tracer-configuration
         - name: DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED
           value: "true"
