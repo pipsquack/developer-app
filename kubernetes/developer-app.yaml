@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
   - name: developer-app
-    image: yaalexf/developer-app@sha256:8c3c2a62311a85268428dabf9a8059653a2c2090649903cfab7e442d5eaece0a
+    image: yaalexf/developer-app@sha256:a4a1c1b80ee4c643f0c6f5c8e825ee48465f3ed290cd7fc50b04a17ee6a3467d
     imagePullPolicy: Always
     env:
     - name: DD_IAST_ENABLED
