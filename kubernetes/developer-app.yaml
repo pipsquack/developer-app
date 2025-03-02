@@ -23,7 +23,6 @@ spec:
         pipsquack.com/cost-centre: cc001
       annotations:
         admission.datadoghq.com/java-lib.version: latest
-<<<<<<< Updated upstream
     containers:
     - name: developer-app
       image: yaalexf/developer-app@sha256:225b0cd615f65d2217102cd68d994351ce6b5bb1511c7a6922aa3f589d524c22
@@ -53,7 +52,6 @@ spec:
         value: UDS_DATAGRAM
       - name: MANAGEMENT_STATSD_METRICS_EXPORT_HOST
         value: /var/run/datadog/dsd.socket
-=======
     spec:
       containers:
       - name: developer-app
