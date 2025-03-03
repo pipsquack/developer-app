@@ -5,13 +5,17 @@ metadata:
   name: attacker
   labels:
     app.kubernetes.io/name: attacker
-    admission.datadoghq.com/enabled: "false"
-    tags.datadoghq.com/env: lab
     tags.datadoghq.com/service: attacker
     tags.datadoghq.com/version: "0.0"
 spec:
   schedule: "0 * * * *"
   jobTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: attacker
+        admission.datadoghq.com/enabled: "false"
+        tags.datadoghq.com/service: attacker
+        tags.datadoghq.com/version: "0.0"
     spec:
       template:
         spec:
