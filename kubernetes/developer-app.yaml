@@ -16,8 +16,6 @@ spec:
       labels:
         app.kubernetes.io/name: developer-app
         admission.datadoghq.com/enabled: "true"
-        tags.datadoghq.com/service: developer-app
-        pipsquack.com/cost-centre: cc001
       annotations:
         admission.datadoghq.com/java-lib.version: latest
     spec:
