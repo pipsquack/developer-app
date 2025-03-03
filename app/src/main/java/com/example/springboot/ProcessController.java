@@ -28,7 +28,13 @@ public class ProcessController {
     private ClassicHttpRequest httpGet;
 
     public ProcessController() {
-        httpGet = ClassicRequestBuilder.get("https://fakerapi.it/api/v1/custom")
+        String uri;
+        if (Application.version.endsWith("1")) {
+            uri = "https://fakerapi.it/api/v1/custom";
+        } else {
+            uri = "https://fakerapi.it/api/v1/cuztom";
+        }
+        httpGet = ClassicRequestBuilder.get(uri)
                 .addParameter("_quantity", "10")
                 .addParameter("cc", "card_number")
                 .addParameter("value", "buildingNumber")
