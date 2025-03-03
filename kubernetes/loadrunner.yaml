@@ -80,5 +80,4 @@ spec:
           done &
 
           sleep 1d
-      resources:
-        limits: {}
+      resources: {}
