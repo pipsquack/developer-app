@@ -4,7 +4,7 @@ metadata:
   name: loadrunner
   labels:
     app.kubernetes.io/name: loadrunner
-    admission.datadoghq.com/enabled: "false"
+    admission.datadoghq.com/enabled: "true"
     tags.datadoghq.com/service: loadrunner
     tags.datadoghq.com/version: "0.0"
 spec:
