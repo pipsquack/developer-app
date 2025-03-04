@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: developer-app
-        image: yaalexf/developer-app@sha256:560a5d3e4bb6327659c5c85444e88686901c9266c12143347218315c73b08381
+        image: yaalexf/developer-app@sha256:ff869bc5cd03e36ba15c63c45b9b64c45848a16bfde778536398c6da79891615
         imagePullPolicy: Always
         env:
         - name: DD_IAST_ENABLED
