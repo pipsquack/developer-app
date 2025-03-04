@@ -97,8 +97,8 @@ jobs:
           echo $IMAGE_DIGEST
           cd /home/runner/work/developer-app/developer-app/kubernetes
           cat developer-app.yaml
-          git push -D argocd/${{ github.ref_name }} || echo "Branch does not exist"
-          git branch -b argocd/${{ github.ref_name }}
+          git push -d argocd/${{ github.ref_name }} || echo "Branch does not exist"
+          git checkout -b argocd/${{ github.ref_name }}
           sed -i -e "s/${CONTAINER_IMAGE/\//\\/}[:|@].*/${IMAGE_DIGEST/\//\\/}/" developer-app.yaml
           cat developer-app.yaml
           git config user.name "${{ github.workflow }} workflow"
