@@ -3,8 +3,11 @@ name: CI
 
 on:
   push:
+    branches:
+      - "main"
     paths:
-      - 'app/**'
+      - "app/**"
+      - "kubernetes/**"
   workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
@@ -14,9 +17,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-          DATADOG_SITE: datadoghq.com
-          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
-          DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
+      DATADOG_SITE: datadoghq.com
+      DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+      DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
     steps:
       - name: Dump GitHub context
         run: |
@@ -106,4 +109,3 @@ jobs:
           git commit -m "GitHub Actions run ${{ github.run_id }}"
           git push -u origin argocd/${{ github.ref_name }}
           git status
-
