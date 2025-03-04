@@ -23,6 +23,8 @@ spec:
       value: "1"
     - name: APP_POLL_DELAY_MILI
       value: "1000"
+    - name: APP_POLL_DURATION_MILI
+      value: "60000"
     - name: DD_DATA_STREAMS_ENABLED
       value: "true"
     - name: DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED
@@ -56,6 +58,8 @@ spec:
       value: "500"
     - name: APP_POLL_DELAY_MILI
       value: "60000"
+    - name: APP_POLL_DURATION_MILI
+      value: "60000"
     - name: DD_DATA_STREAMS_ENABLED
       value: "true"
     - name: DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED
@@ -86,6 +90,8 @@ spec:
     - name: APP_POLL_SIZE
       value: "500"
     - name: APP_POLL_DELAY_MILI
+      value: "60000"
+    - name: APP_POLL_DURATION_MILI
       value: "60000"
     - name: DD_DATA_STREAMS_ENABLED
       value: "true"
