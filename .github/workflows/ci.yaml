@@ -98,11 +98,11 @@ jobs:
           cd /home/runner/work/developer-app/developer-app/kubernetes
           cat developer-app.yaml
           git push -D argocd/${{ github.ref_name }} || echo "Branch does not exist"
-          git checkout -u argocd/${{ github.ref_name }}
+          git branch -b argocd/${{ github.ref_name }}
           sed -i -e "s/${CONTAINER_IMAGE/\//\\/}[:|@].*/${IMAGE_DIGEST/\//\\/}/" developer-app.yaml
           cat developer-app.yaml
           git config user.name "${{ github.workflow }} workflow"
           git config user.email bot@users.noreply.github.com
           git add developer-app.yaml
           git commit -m "GitHub Actions run ${{ github.run_id }}"
-          git push
+          git push -u origin argocd/${{ github.ref_name }}
