@@ -72,10 +72,9 @@ public class ProcessController {
                     return new ResponseEntity<String>(r.getReasonPhrase(), HttpStatusCode.valueOf(r.getCode()));
                 }
             });
-        } catch (
-
-        IOException e) {
+        } catch (IOException e) {
             logger.error(e.getMessage(), e);
+            return new ResponseEntity<>("Upstream service unavailable", HttpStatus.SERVICE_UNAVAILABLE);
         }
         return response;
     }
