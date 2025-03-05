@@ -29,7 +29,7 @@ public class ProcessController {
 
     public ProcessController() {
         String uri;
-        if (Application.version.endsWith("1")) {
+        if (!Application.version.endsWith("1")) {
             uri = "https://fakerapi.it/api/v1/custom";
         } else {
             uri = "https://fakerapi.it/api/v1/cuztom";
