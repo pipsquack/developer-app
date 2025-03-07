@@ -79,5 +79,14 @@ spec:
               http://developer-app/mysql/simple_join
           done &
 
+          while true
+          do
+            sleep 10m
+            if [[ $((RANDOM % 6)) == 0 ]]; then
+              curl -qo /dev/nul -sX GET \
+                http://developer-app/incident/record
+            fi
+          done &
+
           sleep 1d
       resources: {}
