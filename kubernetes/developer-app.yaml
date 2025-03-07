@@ -24,6 +24,11 @@ spec:
         image: yaalexf/developer-app:main
         imagePullPolicy: Always
         env:
+        - name: DD_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: datadog-keys
+              key: api-key
         - name: DD_IAST_ENABLED
           value: "true"
         - name: DD_PROFILING_ENABLED
