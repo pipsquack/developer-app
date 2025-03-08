@@ -92,13 +92,11 @@ spec:
 
           while true
           do
-            sleep 10m
-            if [[ $((RANDOM % 6)) == 0 ]]; then
-              curl -qo /dev/nul -sX POST \
-                http://developer-app/graphql \
-                -H 'Content-Type: application/json' \
-                - d '{"query":"query {\n    getAllBooks {\n        id\n        title\n        author\n    }\n}\n","variables":{}}'
-            fi
+            sleep 15s
+            curl -qo /dev/nul -sX POST \
+              http://developer-app/graphql \
+              -H 'Content-Type: application/json' \
+              -d '{"query":"query {\n    getAllBooks {\n        id\n        title\n        author\n    }\n}\n","variables":{}}'
           done &
 
           sleep 1d
