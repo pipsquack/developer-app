@@ -7,6 +7,8 @@ metadata:
     admission.datadoghq.com/enabled: "false"
     tags.datadoghq.com/service: loadrunner
     tags.datadoghq.com/version: "0.0"
+  annotations:
+    argocd.argoproj.io/sync-options: Force=true,Replace=true
 spec:
   containers:
     - name: load
