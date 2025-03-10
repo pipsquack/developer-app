@@ -99,5 +99,14 @@ spec:
               -d '{"query":"query {\n    getAllBooks {\n        id\n        title\n        author\n    }\n}\n","variables":{}}'
           done &
 
+          while true
+          do
+            sleep 10s
+            curl -sX POST \
+              -H 'Content-Type: text/plain' \
+              -d 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi volutpat velit id.' \
+              http://developer-app/echo
+          done &
+
           sleep 1d
       resources: {}
