@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-alpine-3.22
+FROM eclipse-temurin:17-jre-ubi9-minimal
 ARG BUILD
 ARG GIT_COMMIT_SHA
 ARG GIT_URL
