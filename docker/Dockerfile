@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-alpine-3.22
 ARG BUILD
 ARG GIT_COMMIT_SHA
 ARG GIT_URL
