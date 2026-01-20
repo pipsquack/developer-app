@@ -31,6 +31,8 @@ spec:
               key: api-key
         - name: DD_ENV
           value: "demo"
+        - name: DD_CODE_ORIGIN_FOR_SPANS_ENABLED
+          value: "true"
         - name: DD_IAST_ENABLED
           value: "true"
         - name: DD_PROFILING_ENABLED
