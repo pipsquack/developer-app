@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: developer-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/pipsquack/developer-app.git
+    path: kubernetes
+    targetRevision: argocd/main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: developer-app
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - Replace=true
+    - ApplyOutOfSyncOnly=true
+    - PruneLast=true
+  ignoreDifferences:
+    - group: cilium.io
+      kind: CiliumIdentity
