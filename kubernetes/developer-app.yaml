@@ -29,6 +29,8 @@ spec:
             secretKeyRef:
               name: datadog-keys
               key: api-key
+        - name: DD_ENV
+          value: "demo"
         - name: DD_IAST_ENABLED
           value: "true"
         - name: DD_PROFILING_ENABLED
