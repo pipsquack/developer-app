@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: developer-app
-        image: yaalexf/developer-app:main
+        image: yaalexf/developer-app@sha256:86e55734d88cced91b498d92fb38deb5b220ed0d5ef87cd5e7be9b4e3538cb01
         imagePullPolicy: Always
         env:
         - name: DD_API_KEY
